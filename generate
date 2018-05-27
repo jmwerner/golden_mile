@@ -1,0 +1,4 @@
+#!/bin/bash
+
+source activate asv_walk
+Rscript leaflet_map.R
