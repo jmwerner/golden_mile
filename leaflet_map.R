@@ -3,71 +3,61 @@ library(jsonlite)
 library(htmlwidgets)
 
 
-# GIS libraries all suck, so I'm writing my own more accurate distance functions
-calculatePointwiseDistances = function(lat, lon) {
-    latDiff = diff(lat)
-    lonDiff = diff(lon)
-    distances = c(0, sqrt(latDiff^2 + lonDiff^2))
-    distances
-}
-
-# Finding the vector index where the percentages overtake the total percent complete
-findCumulativeDistanceIndex = function(distancePercentages, milesCompleted, milestotal) {
-    index = 1
-    if(milesCompleted >= milesTotal){
-        index = length(distancePercentages)
-    }else{
-        while(distancePercentages[index] <= milesCompleted / milesTotal) {
-        index = index + 1
-        }    
-    }
-    index
-}
-
-
 # Using fromJSON instead of graphics libs because they are all unnecessarily hard to use
 directions = read.csv('route_coordinates.csv', header = FALSE)
 names(directions) = c('lat', 'lon')
 lattitude = directions[,1]
 longitude = directions[,2]
 
+lat = c(44.9554089, 44.9558987, 44.9491110, 44.9486850, 44.9478321, 44.9486722, 
+        44.9481936, 44.9493996, 44.9493908, 44.9495177, 44.9615287, 44.9620660)
 
-# TODO: Add bars here
-# pointsOfInterest = data.frame(longitude = c(-122.17677, -80.5976773),
-#                               lattitude = c(37.47977, 28.2129335),
-#                               popup = c("ASV",  "Ed Johnson"))
+lon = c(-93.2755728, -93.2877550, -93.2876710, -93.2883259, -93.2883593, 
+        -93.2973159, -93.2972610, -93.2976402, -93.2977870, -93.2981007, 
+        -93.2926604, -93.2916538)
 
-# johnson_icon <- makeIcon(
-#   iconUrl = "johnson_icon.png",
-#   iconWidth = 70, iconHeight = 70
-# )
+bars = c('TILT', 'The Bulldog', 'The Lyndale', 
+         'Moto-i', 'Up-Down', 
+         'Stella\'s Fish Café', 
+         'Libertine', 
+         'Uptown Tavern', 'Cowboy Slim\'s', 
+         'Williams Uptown Pub', 
+         'The Lowry', 
+         'Liquor Lyle\'s')
 
-# gh_icon <- makeIcon(
-#   iconUrl = "gh_icon.png",
-#   iconWidth = 50, iconHeight = 50
-# )
+pointsOfInterest = data.frame(longitude = lon,
+                              lattitude = lat,
+                              popup = bars)
 
-# walking_icon <- makeIcon(
-#   iconUrl = "walking_icon.png",
-#   iconWidth = 50, iconHeight = 50
-# )
+
+icon_list <- lapply(1:12, function(x){
+    makeIcon(
+        iconUrl = paste0("icons/", x, ".png"),
+        iconWidth = 30, 
+        iconHeight = 30)
+})
+
+icon_list[[1]] =     makeIcon(
+        iconUrl = "icons/phil_2.png",
+        iconWidth = 80, 
+        iconHeight = 80)
+icon_list[[12]] =     makeIcon(
+        iconUrl = "icons/phil_2.png",
+        iconWidth = 80, 
+        iconHeight = 80)
 
 map = leaflet() %>% 
-           addProviderTiles(providers$Esri.NatGeoWorldMap) %>% 
-           # addProviderTiles("CartoDB.Positron") %>%
-           # addProviderTiles("Stamen.Toner") %>%
-           # addTiles(group = "OSM (default)") %>%
-           #     addProviderTiles("MtbMap") %>%
-           #     addProviderTiles("Stamen.TonerLines",
-           #         options = providerTileOptions(opacity = 0.8)
-           #     ) %>%
-           # # addProviderTiles("Stamen.TonerLabels") %>%
-           addPolylines(lat = lattitude, lng= longitude, color = "white", weight = 8) %>%
-           addPolylines(lat = lattitude, lng= longitude, color = "blue", weight = 6) 
-           # addPolylines(lat = lattitude[1:distanceIndex], lng= longitude[1:distanceIndex], color = "red", weight = 9) %>%
-           # addMarkers(lat = pointsOfInterest$lattitude[1], lng = pointsOfInterest$longitude[1], popup = pointsOfInterest$popup[1], icon = gh_icon) %>%
-           # addMarkers(lat = pointsOfInterest$lattitude[2], lng = pointsOfInterest$longitude[2], popup = pointsOfInterest$popup[2], icon = johnson_icon) %>%
-           # addMarkers(lat = lattitude[distanceIndex], lng = longitude[distanceIndex], popup = paste("Completed about", milesCompleted, "miles as of", format(Sys.time(), "%a %b %d")), icon = walking_icon)
+           addProviderTiles(providers$Hydda.Base) %>% 
+           addPolylines(lat = lattitude, lng = longitude, color = "white", weight = 10) %>%
+           addPolylines(lat = lattitude, lng = longitude, color = "#FFFF00", weight = 6) 
+
+for(i in 1:12){
+    map = map %>% addMarkers(lat = pointsOfInterest$lattitude[i], 
+                             lng = pointsOfInterest$longitude[i], 
+                             popup = pointsOfInterest$popup[i], 
+                             icon = icon_list[[i]])
+}
+           
 
 
 saveWidget(map, file = "index.html")
