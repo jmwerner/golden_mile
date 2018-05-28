@@ -55,7 +55,8 @@ for(i in 1:12){
     map = map %>% addMarkers(lat = pointsOfInterest$lattitude[i], 
                              lng = pointsOfInterest$longitude[i], 
                              popup = pointsOfInterest$popup[i], 
-                             icon = icon_list[[i]])
+                             icon = icon_list[[i]],
+                             labelOptions = labelOptions(textsize = "15px"))
 }
            
 
