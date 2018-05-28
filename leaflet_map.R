@@ -33,18 +33,18 @@ pointsOfInterest = data.frame(longitude = lon,
 icon_list <- lapply(1:12, function(x){
     makeIcon(
         iconUrl = paste0("icons/", x, ".png"),
-        iconWidth = 30, 
-        iconHeight = 30)
+        iconWidth = 75, 
+        iconHeight = 75)
 })
 
 icon_list[[1]] =     makeIcon(
         iconUrl = "icons/phil_2.png",
-        iconWidth = 80, 
-        iconHeight = 80)
+        iconWidth = 100, 
+        iconHeight = 100)
 icon_list[[12]] =     makeIcon(
         iconUrl = "icons/phil_2.png",
-        iconWidth = 80, 
-        iconHeight = 80)
+        iconWidth = 100, 
+        iconHeight = 100)
 
 map = leaflet() %>% 
            addProviderTiles(providers$Hydda.Base) %>% 
