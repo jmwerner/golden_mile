@@ -56,7 +56,7 @@ for(i in 1:12){
                              lng = pointsOfInterest$longitude[i], 
                              popup = pointsOfInterest$popup[i], 
                              icon = icon_list[[i]],
-                             labelOptions = labelOptions(textsize = "15px"))
+                             labelOptions = labelOptions(textsize = "50px"))
 }
            
 
