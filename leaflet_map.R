@@ -3,7 +3,6 @@ library(jsonlite)
 library(htmlwidgets)
 
 
-# Using fromJSON instead of graphics libs because they are all unnecessarily hard to use
 directions = read.csv('route_coordinates.csv', header = FALSE)
 names(directions) = c('lat', 'lon')
 lattitude = directions[,1]
@@ -32,10 +31,11 @@ pointsOfInterest = data.frame(longitude = lon,
 
 icon_list <- lapply(1:12, function(x){
     makeIcon(
-        iconUrl = paste0("icons/", x, ".png"),
-        iconWidth = 75, 
-        iconHeight = 75)
+        iconUrl = paste0("icons/beer.png"),
+        iconWidth = 50, 
+        iconHeight = 50)
 })
+
 
 icon_list[[1]] =     makeIcon(
         iconUrl = "icons/phil_2.png",
@@ -56,7 +56,8 @@ for(i in 1:12){
                              lng = pointsOfInterest$longitude[i], 
                              popup = pointsOfInterest$popup[i], 
                              icon = icon_list[[i]],
-                             labelOptions = labelOptions(textsize = "50px"))
+                             labelOptions = labelOptions(textsize = "100px", 
+                                                         freezeAtZoom = "max"))
 }
            
 
