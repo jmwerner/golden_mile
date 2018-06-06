@@ -33,8 +33,8 @@ pointsOfInterest = data.frame(longitude = lon,
 icon_list <- lapply(1:12, function(x){
     makeIcon(
         iconUrl = paste0("icons/beer.png"),
-        iconWidth = 50, 
-        iconHeight = 50)
+        iconWidth = 65, 
+        iconHeight = 65)
 })
 
 
@@ -56,11 +56,8 @@ for(i in 1:12){
     map = map %>% addMarkers(lat = pointsOfInterest$lattitude[i], 
                              lng = pointsOfInterest$longitude[i], 
                              popup = pointsOfInterest$popup[i], 
-                             icon = icon_list[[i]],
-                             options = popupOptions(
-                                maxHeight = 50,
-                                textSize = "50px"
-                            )) 
+                             icon = icon_list[[i]])
+
 
 }
       
