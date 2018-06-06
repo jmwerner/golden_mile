@@ -1,6 +1,7 @@
 library(leaflet)
 library(jsonlite)
 library(htmlwidgets)
+library(htmltools)
 
 
 directions = read.csv('route_coordinates.csv', header = FALSE)
@@ -56,11 +57,12 @@ for(i in 1:12){
                              lng = pointsOfInterest$longitude[i], 
                              popup = pointsOfInterest$popup[i], 
                              icon = icon_list[[i]],
-                             labelOptions = labelOptions(textsize = "100px", 
-                                                         freezeAtZoom = "max"))
+                             options = popupOptions(
+                                maxHeight = 50,
+                                textSize = "50px"
+                            )) 
+
 }
-           
-
-
+      
 saveWidget(map, file = "index.html")
 
